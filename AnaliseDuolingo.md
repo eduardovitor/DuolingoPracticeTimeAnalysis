@@ -106,8 +106,8 @@ Check : Minutes count x 1000
     ## Warning: Removed 266 rows containing missing values (geom_point).
 
 ![](AnaliseDuolingo_files/figure-markdown_strict/unnamed-chunk-9-1.png)
-\## Plot showing English practice time during a regular month in my
-routine (June)
+
+## Plot showing English practice time during a regular month in my routine (June)
 
     df_checkmarks %>% 
       ggplot(aes(x = date, y=check)) +
@@ -122,8 +122,8 @@ routine (June)
     ## Warning: Removed 267 rows containing missing values (geom_point).
 
 ![](AnaliseDuolingo_files/figure-markdown_strict/unnamed-chunk-10-1.png)
-\## Plot showing English practice time during a busy month in my routine
-(October)
+
+## Plot showing English practice time during a busy month in my routine (October)
 
     df_checkmarks %>% 
       ggplot(aes(x = date, y=check)) +
