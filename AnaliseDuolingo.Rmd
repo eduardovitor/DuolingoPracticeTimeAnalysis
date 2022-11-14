@@ -1,0 +1,110 @@
+---
+title: "AnaliseDuolingo"
+author: "eduardovitor"
+date: "`r Sys.Date()`"
+output: md_document
+---
+
+```{r}
+ library(tidyverse)
+ library(dplyr)
+ library(lubridate)
+```
+
+## Reading dataframe file containing a cronological record of minutes of practice on Duolingo
+   Check : Minutes count x 1000
+```{r}
+
+  workdir ="/home/eduardovitor/Downloads/Loop Habits CSV 2022-11-11/001 Duolingo ingls/"
+  checkmarks = paste(workdir,"Checkmarks.csv",sep="")
+  df_checkmarks = read_csv(checkmarks)
+  df_checkmarks$check <- df_checkmarks$check/1000
+```
+## Understanding dataframe structure
+```{r}
+  str(df_checkmarks)
+```
+## Converting date column to class
+```{r}
+df_checkmarks$date <- as.Date(df_checkmarks$date,
+                        format = "%y-%m-%d")
+class(df_checkmarks$date)
+```
+## Getting data of year, month and day
+```{r}
+  df_checkmarks <- df_checkmarks %>% mutate(month=month(date,label=TRUE),year=year(date),day=day(date))
+```
+## Removing November month because this month's data is incomplete
+```{r}
+  df_checkmarks <- df_checkmarks %>% filter(month!="Nov")
+```
+
+## Boxplots grouping data on practice time by month
+```{r}
+  df_checkmarks %>% 
+  group_by(month) %>% 
+  ggplot(aes(x = month, y=check, fill=month)) +
+  geom_boxplot()+
+  theme_minimal()+
+  theme(legend.position = "none")+
+  labs(x="", y="Minutes", title = "Duolingo English practice time grouped by month (2022)")
+```
+  
+## Line graph showing practice time throughout the months
+```{r}
+  df_checkmarks %>% 
+  ggplot(aes(x = date, y=check)) +
+  theme_minimal()+
+  geom_line()+
+  geom_point()+
+  labs(x="", y="Minutes per day", title="Duolingo English practice time in 2022 (Jan - Oct)")
+```
+
+## Plot showing English practice time during my vacation month
+```{r}
+df_checkmarks %>% 
+  ggplot(aes(x = date, y=check)) +
+  theme_minimal()+
+  geom_line()+
+  geom_point()+
+  scale_x_date(limit=c(as.Date("2022-01-01"),as.Date("2022-01-31")))+
+  labs(x="", y="Minutes per day", title="Duolingo English practice time during January")
+```
+## Plot showing English practice time during a regular month in my routine (June)
+
+```{r}
+df_checkmarks %>% 
+  ggplot(aes(x = date, y=check)) +
+  theme_minimal()+
+  geom_line()+
+  geom_point()+
+  scale_x_date(limit=c(as.Date("2022-06-01"),as.Date("2022-06-30")))+
+  labs(x="", y="Minutes per day", title="Duolingo English practice time during June")
+```
+## Plot showing English practice time during a busy month in my routine (October)
+
+```{r}
+df_checkmarks %>% 
+  ggplot(aes(x = date, y=check)) +
+  theme_minimal()+
+  geom_line()+
+  geom_point()+
+  scale_x_date(limit=c(as.Date("2022-10-01"),as.Date("2022-10-31")))+
+  labs(x="", y="Minutes per day", title="Duolingo English practice time during October")
+```
+
+## Understanding practice time data distribution with scatterplot
+
+```{r}
+ df_checkmarks %>% 
+  ggplot(aes(x = date, y=check)) +
+  theme_minimal()+
+  geom_point()+
+  labs(x="", y="Minutes per day", title="Duolingo English practice time Scatterplot")
+```
+
+
+
+
+
+
